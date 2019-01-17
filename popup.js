@@ -3,19 +3,12 @@
 // found in the LICENSE file.
 
 'use strict';
-
-let changeColor = document.getElementById('changeColor');
-
-chrome.storage.sync.get('color', function(data) {
-  changeColor.style.backgroundColor = data.color;
-  changeColor.setAttribute('value', data.color);
-});
-
-changeColor.onclick = function(element) {
-  let color = element.target.value;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.executeScript(
-        tabs[0].id,
-        {code: 'document.body.style.backgroundColor = "' + color + '";'});
+var timeleft = 0;
+var downloadTimer = setInterval(function(){
+  document.getElementById("progressBar").value = 0 + ++timeleft;
+  if(timeleft > 10)
+  chrome.tabs.query({active:true,currentWindow:true},function(tabs){
+    chrome.tabs.remove(tabs[0].id);
   });
-};
+},1000);
+
